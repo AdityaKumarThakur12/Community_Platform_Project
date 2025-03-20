@@ -1,72 +1,151 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  HomeIcon, 
-  UserGroupIcon, 
-  BookmarkIcon, 
-  CalendarIcon,
-  ChatBubbleLeftRightIcon
+import {
+    HomeIcon,
+    UserGroupIcon,
+    BookmarkIcon,
+    CalendarIcon,
+    ChatBubbleLeftRightIcon,
+    MagnifyingGlassIcon,
+    MoonIcon,
+    ArrowRightOnRectangleIcon,
+    UserIcon,
+    LightBulbIcon,
+    LinkIcon
 } from '@heroicons/react/24/outline';
 
 function Sidebar() {
-  const menuItems = [
-    { icon: HomeIcon, label: 'Home', active: true },
-    { icon: UserGroupIcon, label: 'My Communities' },
-    { icon: BookmarkIcon, label: 'Saved' },
-    { icon: CalendarIcon, label: 'Events' },
-    { icon: ChatBubbleLeftRightIcon, label: 'Messages' },
-  ];
+    const [darkMode, setDarkMode] = useState(false);
 
-  return (
-    <aside className="w-64 hidden md:block">
-      <nav className="space-y-2">
-        {menuItems.map((item, index) => (
-          <motion.a
-            key={item.label}
-            href="#"
-            whileHover={{ x: 5 }}
-            className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-              item.active 
-                ? 'bg-purple-100 text-purple-600' 
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            <item.icon className="h-6 w-6" />
-            <span className="font-medium">{item.label}</span>
-          </motion.a>
-        ))}
-      </nav>
+    const menuItems = [
+        { icon: HomeIcon, label: 'Home', active: true },
+        { icon: UserGroupIcon, label: 'My Communities' },
+        { icon: BookmarkIcon, label: 'Saved' },
+        { icon: CalendarIcon, label: 'Events' },
+        { icon: ChatBubbleLeftRightIcon, label: 'Messages' },
+    ];
 
-      {/* Create Post Button */}
-      <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        className="w-full mt-6 px-4 py-3 bg-purple-600 text-white rounded-lg font-medium shadow-lg hover:bg-purple-700 transition-colors"
-      >
-        Create Post
-      </motion.button>
+    return (
+        <aside className={`w-64 hidden md:block ${darkMode ? 'bg-gray-800' : 'bg-gray-900'} rounded-2xl p-5 transition-colors`}>
+            {/* User Profile Section */}
+            <div className="flex items-center space-x-3 mb-4 px-4 py-3 bg-gray-700 rounded-lg">
+                <UserIcon className="h-8 w-8 text-gray-200" />
+                <span className="text-white font-medium">John Doe</span>
+            </div>
+            
+            {/* Search Bar */}
+            <div className="relative mb-4">
+                <input 
+                    type="text" 
+                    placeholder="Search..." 
+                    className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
+                />
+                <MagnifyingGlassIcon className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+            </div>
+            
+            <nav className="space-y-2">
+                {menuItems.map((item, index) => (
+                    <motion.a
+                        key={item.label}
+                        href="#"
+                        whileHover={{ x: 5 }}
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${item.active
+                                ? 'bg-purple-100 text-purple-600'
+                                : 'text-gray-300 hover:bg-gray-100 hover:text-gray-900'
+                            }`}
+                    >
+                        <item.icon className="h-6 w-6" />
+                        <span className="font-medium">{item.label}</span>
+                    </motion.a>
+                ))}
+            </nav>
 
-      {/* My Communities Section */}
-      <div className="mt-8">
-        <h3 className="px-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
-          My Communities
-        </h3>
-        <div className="mt-4 space-y-2">
-          {['Web Development', 'AI & Technology', 'Digital Art'].map((community) => (
-            <motion.a
-              key={community}
-              href="#"
-              whileHover={{ x: 5 }}
-              className="flex items-center space-x-3 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+            {/* Create Post Button */}
+            <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full mt-6 px-4 py-3 bg-purple-600 text-white rounded-lg font-medium shadow-lg hover:bg-purple-700 transition-colors"
             >
-              <span className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-pink-400" />
-              <span>{community}</span>
-            </motion.a>
-          ))}
-        </div>
-      </div>
-    </aside>
-  );
+                Create Post
+            </motion.button>
+
+            {/* My Communities Section */}
+            <div className="mt-8">
+                <h3 className="px-4 text-sm font-semibold text-gray-300 uppercase tracking-wider">
+                    My Communities
+                </h3>
+                <div className="mt-4 space-y-2">
+                    {[
+                        { name: 'Web Development', image: 'https://kartikmehtablog.com/wp-content/uploads/2022/12/AdobeStock_419269782-2048x853.jpeg' },
+                        { name: 'AI & Technology', image: 'https://thefusioneer.com/wp-content/uploads/2023/11/5-AI-Advancements-to-Expect-in-the-Next-10-Years-scaled.jpeg' },
+                        { name: 'Digital Art', image: 'https://www.elegantthemes.com/blog/wp-content/uploads/2023/07/history-of-AI-art-1536x764.jpg' }
+                    ].map((community) => (
+                        <motion.a
+                            key={community.name}
+                            href="#"
+                            whileHover={{ x: 5 }}
+                            className="flex items-center space-x-3 px-4 py-2 rounded-lg text-gray-300 hover:bg-gray-200 hover:text-gray-900"
+                        >
+                            <span>
+                                <img className="rounded-full h-10 w-10 object-cover" src={community.image} alt={community.name} />
+                            </span>
+                            <span>{community.name}</span>
+                        </motion.a>
+                    ))}
+                </div>
+            </div>
+
+            {/* Trending Topics Section */}
+            <div className="mt-8">
+                <h3 className="px-4 text-sm font-semibold text-gray-300 uppercase tracking-wider">
+                    Trending Topics
+                </h3>
+                <ul className="mt-4 space-y-2 text-gray-400">
+                    {['React.js', 'Machine Learning', 'UI/UX Design', 'Blockchain'].map((topic) => (
+                        <li key={topic} className="px-4 py-2 hover:text-white cursor-pointer">
+                            #{topic}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* Quick Links Section */}
+            <div className="mt-8">
+                <h3 className="px-4 text-sm font-semibold text-gray-300 uppercase tracking-wider">Quick Links</h3>
+                <ul className="mt-4 space-y-2">
+                    {['FAQ', 'Support', 'Privacy Policy'].map((link) => (
+                        <li key={link} className="flex items-center space-x-2 px-4 py-2 text-gray-400 hover:text-white cursor-pointer">
+                            <LinkIcon className="h-5 w-5" />
+                            <span>{link}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* Daily Tip Section */}
+            <div className="mt-8 p-4 bg-gray-700 rounded-lg">
+                <LightBulbIcon className="h-6 w-6 text-yellow-400 mb-2" />
+                <p className="text-gray-300 text-sm">"Consistency beats intensity. Small daily progress leads to big results!"</p>
+            </div>
+
+            {/* Dark Mode Toggle */}
+            <div className="mt-6 flex items-center justify-between px-4">
+                <span className="text-gray-300">Dark Mode</span>
+                <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-lg bg-gray-700 hover:bg-gray-600">
+                    <MoonIcon className="h-6 w-6 text-gray-200" />
+                </button>
+            </div>
+            
+            {/* Logout Button */}
+            <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full mt-6 px-4 py-3 bg-red-600 text-white rounded-lg font-medium shadow-lg hover:bg-red-700 transition-colors"
+            >
+                <ArrowRightOnRectangleIcon className="inline-block w-5 h-5 mr-2" /> Logout
+            </motion.button>
+        </aside>
+    );
 }
 
 export default Sidebar;

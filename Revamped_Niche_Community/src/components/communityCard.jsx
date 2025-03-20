@@ -6,7 +6,7 @@ function CommunityCard({ name, members, description, image }) {
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+      className="bg-gray-800 shadow-md shadow-blue-300 rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
     >
       <div className="h-24 bg-gradient-to-r from-purple-400 to-pink-400" />
       <div className="p-4">
@@ -17,14 +17,14 @@ function CommunityCard({ name, members, description, image }) {
             className="w-16 h-16 rounded-full border-4 border-white -mt-12"
           />
           <div className="ml-4 -mt-2">
-            <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
-            <div className="flex items-center text-sm text-gray-500">
+            <h3 className="text-lg font-semibold text-gray-200">{name}</h3>
+            <div className="flex items-center text-sm text-gray-400">
               <UserGroupIcon className="h-4 w-4 mr-1" />
               {members.toLocaleString()} members
             </div>
           </div>
         </div>
-        <p className="mt-3 text-sm text-gray-600">{description}</p>
+        <p className="mt-3 text-sm text-gray-400">{description}</p>
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}

@@ -11,9 +11,9 @@ function TrendingTopics() {
   ];
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm">
-      <h2 className="text-xl font-semibold mb-4">Trending Topics</h2>
-      <div className="flex space-x-4 overflow-x-auto pb-2">
+    <div className="bg-gray-900 text-white overflow-hidden rounded-xl p-6 shadow-sm">
+      <h2 className="text-xl  font-semibold mb-4">Trending Topics</h2>
+      <div className="flex space-x-4 overflow-x-auto scrollbar-hide pb-2">
         {topics.map((topic, index) => (
           <motion.div
             key={topic.name}
