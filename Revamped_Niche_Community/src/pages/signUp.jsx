@@ -43,15 +43,15 @@ const Signup = () => {
             {/* Left Side: Video with Motivational Overlay */}
             <div className='w-full sm:w-1/4 md:w-1/2 h-screen relative flex items-center justify-center bg-black'>
                 <video autoPlay loop muted playsInline className='w-full h-full object-cover'>
-                    <source src='/videos/ekatha.mp4' type='video/mp4' />
+                    <source src='https://cdn.pixabay.com/video/2023/12/10/192779-893446888_large.mp4' type='video/mp4' />
                     Your browser does not support the video tag.
                 </video>
 
                 <div className="absolute inset-0 bg-black/50"></div>
 
-                <div className="absolute top-5 left-5 flex items-center cursor-pointer" onClick={()=> navigate('/')}>
-                    <img src='/logo.svg' alt='Logo' className='w-10 h-10 object-contain' />
-                    <span className='text-white text-2xl font-semibold ml-3'>KathaVachan</span>
+                <div className="absolute top-5 left-5 flex items-center cursor-pointer" onClick={() => navigate('/')}>
+                    <img src='/CWP-3.png' alt='Logo' className='w-15 h-15 object-contain' />
+                    <span className='text-white text-2xl font-semibold ml-1'>𝓣𝖍𝖗𝖊𝖆𝖉𝖎𝖋y</span>
                 </div>
 
                 {/* Hide text on small screens */}
@@ -61,11 +61,11 @@ const Signup = () => {
                     transition={{ duration: 1 }}
                     className="absolute text-center text-white px-8 hidden sm:block"
                 >
-                    <h2 className="text-4xl font-extrabold bg-gradient-to-r from-sky-400 to-blue-600 text-transparent bg-clip-text">
-                        🚀 AI-Driven Business Transformation
+                    <h2 className="text-4xl font-extrabold bg-gradient-to-r from-sky-400 to-blue-100 text-transparent bg-clip-text">
+                        🚀 Join the Ultimate 𝓣𝖍𝖗𝖊𝖆𝖉𝖎𝖋y Community Hub
                     </h2>
                     <p className="text-lg mt-4">
-                        Automate. Simplify. Innovate. Let AI handle the paperwork while you focus on growth.
+                        Discover, connect, and engage in vibrant discussions tailored to your interests.
                     </p>
                     <motion.p
                         initial={{ opacity: 0, y: 10 }}
@@ -73,7 +73,7 @@ const Signup = () => {
                         transition={{ delay: 0.5, duration: 1 }}
                         className="text-lg mt-2 font-medium text-gray-300"
                     >
-                        Your **business voice assistant** for seamless **data collection & eKatha creation**.
+                        🌍 Explore communities in **technology, fitness, books, and more**—crafted just for you.
                     </motion.p>
                     <motion.p
                         initial={{ opacity: 0, y: 10 }}
@@ -81,7 +81,7 @@ const Signup = () => {
                         transition={{ delay: 1, duration: 1 }}
                         className="text-lg mt-2 text-gray-400 italic"
                     >
-                        "Efficiency is not an option—it's the new standard." ✨
+                        "Find your people. Share your voice. Make an impact." ✨
                     </motion.p>
                 </motion.div>
             </div>

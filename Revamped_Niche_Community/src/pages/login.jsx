@@ -61,7 +61,7 @@ const Login = () => {
             {/* Left Section (Video & Branding) */}
             <div className='w-full sm:w-1/4 md:w-1/2 h-screen relative flex items-center justify-center bg-black'>
                 <video autoPlay loop muted playsInline className='w-full h-full object-cover'>
-                    <source src='/videos/ekatha.mp4' type='video/mp4' />
+                    <source src='https://cdn.pixabay.com/video/2023/12/10/192779-893446888_large.mp4' type='video/mp4' />
                     Your browser does not support the video tag.
                 </video>
 
@@ -79,8 +79,8 @@ const Login = () => {
                     transition={{ duration: 1 }}
                     className="absolute text-center text-white px-8 hidden sm:block"
                 >
-                    <h2 className="text-4xl font-extrabold bg-gradient-to-r from-sky-400 to-blue-600 text-transparent bg-clip-text">
-                        🚀 Join the Ultimate Niche Community Hub
+                    <h2 className="text-4xl font-extrabold bg-gradient-to-r from-sky-400 to-blue-100 text-transparent bg-clip-text">
+                        🚀 Join the Ultimate 𝓣𝖍𝖗𝖊𝖆𝖉𝖎𝖋y Community Hub
                     </h2>
                     <p className="text-lg mt-4">
                         Discover, connect, and engage in vibrant discussions tailored to your interests.

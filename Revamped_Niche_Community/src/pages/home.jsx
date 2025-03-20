@@ -11,6 +11,7 @@ import Footer from '../components/footer';
 import Carousel from '../components/carousel';
 import Testimonials from '../components/testimonials';
 
+
 function Home() {
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('trending');
@@ -23,8 +24,6 @@ function Home() {
 
   return (
     <div className="relative min-h-screen flex flex-col">
-
-
       {/* Overlay for Readability */}
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
@@ -36,7 +35,7 @@ function Home() {
           <div className="flex gap-8">
             <Sidebar />
 
-            <main className="flex-1 space-y-8">
+            <main className="flex-1 space-y-8 overflow-hidden">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -58,7 +57,7 @@ function Home() {
                 <div className="absolute inset-0  bg-opacity-70 -z-10"></div>
 
                 {/* Content */}
-                <h1 className="text-3xl font-bold mb-4">Welcome to NicheCommunity</h1>
+                <h1 className="text-3xl font-bold mb-4">Welcome to Threadify</h1>
                 <p className="text-lg opacity-90">Discover and join communities that match your interests.</p>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -93,28 +92,7 @@ function Home() {
 
               {/* Feed Posts */}
               <div className="space-y-6">
-                <FeedPost
-                  title="Getting Started with Web Development in 2025"
-                  author={{
-                    name: "Sarah Johnson",
-                    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah"
-                  }}
-                  community="Web Development"
-                  content="Here's my comprehensive guide for beginners..."
-                  votes={234}
-                  comments={45}
-                />
-                <FeedPost
-                  title="The Future of AI in Healthcare"
-                  author={{
-                    name: "Dr. Michael Chen",
-                    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael"
-                  }}
-                  community="AI & Technology"
-                  content="Recent breakthroughs in medical AI..."
-                  votes={567}
-                  comments={89}
-                />
+                <FeedPost/>
               </div>
 
               <Testimonials />

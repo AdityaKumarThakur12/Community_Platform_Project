@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import {
   GlobeAltIcon,
-  HeartIcon,
   ChatBubbleLeftRightIcon,
   UserGroupIcon,
   RssIcon,
@@ -35,9 +35,15 @@ function Footer() {
     { icon: RssIcon, value: '1M+', label: 'Daily Posts' }
   ];
 
+  const socialIcons = [
+    { icon: FaFacebook, link: '#' },
+    { icon: FaTwitter, link: '#' },
+    { icon: FaInstagram, link: '#' },
+    { icon: FaLinkedin, link: '#' }
+  ];
+
   return (
     <footer className="relative bg-gray-900 text-white overflow-hidden">
-     
       {/* Stats Section */}
       <div className="max-w-7xl mx-auto border-b-2 border-gray-700 py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
@@ -81,6 +87,18 @@ function Footer() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Bottom Section */}
+      <div className="border-t border-gray-700 py-6 text-center">
+        <div className="flex justify-center space-x-6 mb-4">
+          {socialIcons.map((social, index) => (
+            <a key={index} href={social.link} className="text-gray-400 hover:text-purple-400">
+              <social.icon className="h-6 w-6" />
+            </a>
+          ))}
+        </div>
+        <p className="text-sm text-gray-400">© {new Date().getFullYear()} Threadify. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
     HomeIcon,
     UserGroupIcon,
@@ -16,6 +17,7 @@ import {
 
 function Sidebar() {
     const [darkMode, setDarkMode] = useState(false);
+    const navigate = useNavigate();
 
     const menuItems = [
         { icon: HomeIcon, label: 'Home', active: true },
@@ -27,21 +29,6 @@ function Sidebar() {
 
     return (
         <aside className={`w-64 hidden md:block ${darkMode ? 'bg-gray-800' : 'bg-gray-900'} rounded-2xl p-5 transition-colors`}>
-            {/* User Profile Section */}
-            <div className="flex items-center space-x-3 mb-4 px-4 py-3 bg-gray-700 rounded-lg">
-                <UserIcon className="h-8 w-8 text-gray-200" />
-                <span className="text-white font-medium">John Doe</span>
-            </div>
-            
-            {/* Search Bar */}
-            <div className="relative mb-4">
-                <input 
-                    type="text" 
-                    placeholder="Search..." 
-                    className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
-                />
-                <MagnifyingGlassIcon className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
-            </div>
             
             <nav className="space-y-2">
                 {menuItems.map((item, index) => (
@@ -64,6 +51,7 @@ function Sidebar() {
             <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={()=> navigate('/createPost')}
                 className="w-full mt-6 px-4 py-3 bg-purple-600 text-white rounded-lg font-medium shadow-lg hover:bg-purple-700 transition-colors"
             >
                 Create Post
