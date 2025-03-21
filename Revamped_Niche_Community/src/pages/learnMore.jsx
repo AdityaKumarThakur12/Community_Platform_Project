@@ -2,8 +2,10 @@ import React from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 function CommunityLearnMore() {
+    const navigate = useNavigate()
     return (
         <>
             <Header />
@@ -54,6 +56,7 @@ function CommunityLearnMore() {
 
                     <motion.button
                         className="mt-4 px-4 md:px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg relative z-10"
+                        onClick={()=> navigate('/home')}
                         whileHover={{ scale: 1.1 }}
                     >
                         Join the Movement

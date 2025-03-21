@@ -12,11 +12,14 @@ import Footer from '../components/footer';
 import Carousel from '../components/carousel';
 import Testimonials from '../components/testimonials';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext'; // Import authentication context
 
 function Home() {
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('trending');
   const [communities, setCommunities] = useState([]);
+  const [showLoginModal, setShowLoginModal] = useState(false); // State to control login modal visibility
+  const { currentUser } = useAuth(); // Get the current user from the auth context
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,6 +42,14 @@ function Home() {
     { id: 'latest', name: 'Latest', icon: ArrowTrendingUpIcon },
     { id: 'following', name: 'Following', icon: UserGroupIcon },
   ];
+
+  const handleExploreClick = () => {
+    if (currentUser) {
+      navigate('/communities');
+    } else {
+      setShowLoginModal(true); // Show the login modal if the user is not logged in
+    }
+  };
 
   return (
     <div className="relative min-h-screen flex flex-col">
@@ -80,7 +91,7 @@ function Home() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate('/createCommunity')}
+                  onClick={handleExploreClick} // Call the handler
                   className="mt-6 px-4 py-2 bg-gray-100 text-purple-900 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all"
                 >
                   Explore Communities
@@ -164,6 +175,32 @@ function Home() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <div className="fixed inset-0 flex items-center justify-center  bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-6 w-96 shadow-lg">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Login Required</h2>
+            <p className="text-gray-600 mb-6">
+              You need to log in to explore communities. Please log in or sign up to continue.
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowLoginModal(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => navigate('/login')}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

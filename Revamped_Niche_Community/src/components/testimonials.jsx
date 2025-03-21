@@ -3,17 +3,17 @@ import { motion } from 'framer-motion';
 
 const testimonials = [
     {
-        name: 'John Doe',
+        name: 'Aditya Kumar',
         text: 'This community has been a game-changer for me! I’ve met so many amazing people.',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=JohnDoe',
     },
     {
-        name: 'Jane Smith',
+        name: 'Shivam Nautiyal',
         text: 'I love the discussions here. Always insightful and engaging!',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=JaneSmith',
     },
     {
-        name: 'Michael Brown',
+        name: 'Amit Kumar',
         text: 'A fantastic platform for networking and learning from like-minded individuals.',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MichaelBrown',
     },

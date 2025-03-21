@@ -13,6 +13,9 @@ import CommunityView from './pages/communityView';
 import CommunityLearnMore from './pages/learnMore';
 import CommunityFAQ from './pages/faq';
 import CommunityContact from './pages/contact';
+import PrivacyPolicy from './pages/privacyPolicy';
+import Community from './pages/community';
+import ProtectedRoute from './utils/protectedRoute';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -28,17 +31,19 @@ const App = () => {
       ) : (
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path='/home' element={<ProtectedRoute> <Community/> </ProtectedRoute> }/>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/createPost" element={<CreatePost />} />
+          <Route path="/feed" element={<ProtectedRoute> <Feed /> </ProtectedRoute>} />
+          <Route path="/createPost" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
           <Route path="/post/:id" element={<PostDetail />} />
-          <Route path='/createCommunity' element={<CreateCommunity/>}/>
-          <Route path='/communities' element={<CommunityList/>}/>
+          <Route path='/createCommunity' element={<ProtectedRoute> <CreateCommunity/> </ProtectedRoute>}/>
+          <Route path='/communities' element={<ProtectedRoute> <CommunityList/> </ProtectedRoute>}/>
           <Route path="/community/:id" element={<CommunityView />} />
           <Route path='/learnmore' element={<CommunityLearnMore/>}/>
           <Route path='/faq' element={<CommunityFAQ/>}/>
-          <Route path='contact' element={<CommunityContact/>}/>
+          <Route path='/contact' element={<CommunityContact/>}/>
+          <Route path='/privacyPolicy' element={<PrivacyPolicy/>}/>
 
         </Routes>
       )}
