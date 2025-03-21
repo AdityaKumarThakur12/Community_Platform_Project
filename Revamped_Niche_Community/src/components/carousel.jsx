@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/solid';
+import { useNavigate } from 'react-router-dom';
 
 const slides = [
   {
@@ -22,6 +23,7 @@ const slides = [
 
 function Carousel() {
   const [index, setIndex] = useState(0);
+  const navigate = useNavigate();
 
   const nextSlide = () => setIndex((prev) => (prev + 1) % slides.length);
   const prevSlide = () => setIndex((prev) => (prev - 1 + slides.length) % slides.length);
@@ -46,7 +48,7 @@ function Carousel() {
           <div className="relative z-10 text-center">
             <h2 className="text-2xl md:text-4xl font-bold">{slides[index].title}</h2>
             <p className="mt-2 text-sm md:text-lg">{slides[index].description}</p>
-            <button className="mt-4 px-5 py-2 bg-white text-black rounded-lg font-semibold shadow-lg hover:bg-gray-300 transition-all">
+            <button onClick={()=> navigate('/learnmore')} className="mt-4 px-5 py-2 bg-white text-black rounded-lg font-semibold shadow-lg hover:bg-gray-300 transition-all">
               Learn More
             </button>
           </div>

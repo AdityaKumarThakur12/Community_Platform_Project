@@ -4,7 +4,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { ArrowUpIcon, ArrowDownIcon, ChatBubbleLeftIcon, ShareIcon } from "@heroicons/react/24/outline";
 
-const DATABASE_URL = "https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app/posts.json";
+const DATABASE_URL = "https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app/postss.json";
 const COMMENTS_URL = "https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app/comments";
 
 function Feed() {
@@ -35,7 +35,7 @@ function Feed() {
     );
 }
 
-function FeedPost({ id, title, author, avatar, community, content, votes }) {
+function FeedPost({ id, title, author, avatar, community, content = "", votes }) {
     const navigate = useNavigate();
     const [comments, setComments] = useState([]);
     const [showComments, setShowComments] = useState(false);
@@ -125,5 +125,4 @@ function FeedPost({ id, title, author, avatar, community, content, votes }) {
         </motion.div>
     );
 }
-
 export default Feed;

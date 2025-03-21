@@ -6,7 +6,7 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { ChatBubbleLeftIcon, ShareIcon } from "@heroicons/react/24/outline";
 
-const DATABASE_URL = "https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app/posts";
+const DATABASE_URL = "https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app/postss";
 const COMMENTS_URL = "https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app/comments";
 
 function PostDetail() {

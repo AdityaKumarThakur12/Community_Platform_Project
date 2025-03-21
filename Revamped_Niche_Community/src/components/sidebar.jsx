@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { PlusCircle, ShieldQuestion } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import {
     HomeIcon,
@@ -12,34 +13,52 @@ import {
     ArrowRightOnRectangleIcon,
     UserIcon,
     LightBulbIcon,
-    LinkIcon
+    LinkIcon,
 } from '@heroicons/react/24/outline';
+import axios from 'axios';
 
 function Sidebar() {
     const [darkMode, setDarkMode] = useState(false);
+    const [communities, setCommunities] = useState([]); // State to store community list
     const navigate = useNavigate();
 
     const menuItems = [
-        { icon: HomeIcon, label: 'Home', active: true },
-        { icon: UserGroupIcon, label: 'My Communities' },
-        { icon: BookmarkIcon, label: 'Saved' },
+        { icon: HomeIcon, label: 'Home', active: true, onClick: () => navigate('/') },
+        { icon: UserGroupIcon, label: 'My Communities', onClick: () => navigate('/communities') },
+        { icon: ShieldQuestion, label: 'FAQ', onClick: ()=> navigate('/faq') },
         { icon: CalendarIcon, label: 'Events' },
         { icon: ChatBubbleLeftRightIcon, label: 'Messages' },
     ];
 
+    // Fetch communities from the backend
+    useEffect(() => {
+        axios
+            .get('https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app/communities.json')
+            .then((response) => {
+                if (response.data) {
+                    const fetchedCommunities = Object.keys(response.data).map((key) => ({
+                        id: key,
+                        ...response.data[key],
+                    }));
+                    setCommunities(fetchedCommunities);
+                }
+            })
+            .catch((error) => console.error('Error fetching communities:', error));
+    }, []);
+
     return (
         <aside className={`w-64 hidden md:block ${darkMode ? 'bg-gray-800' : 'bg-gray-900'} rounded-2xl p-5 transition-colors`}>
-            
             <nav className="space-y-2">
                 {menuItems.map((item, index) => (
                     <motion.a
                         key={item.label}
-                        href="#"
+                        onClick={item.onClick}
                         whileHover={{ x: 5 }}
-                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${item.active
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                            item.active
                                 ? 'bg-purple-100 text-purple-600'
                                 : 'text-gray-300 hover:bg-gray-100 hover:text-gray-900'
-                            }`}
+                        }`}
                     >
                         <item.icon className="h-6 w-6" />
                         <span className="font-medium">{item.label}</span>
@@ -51,10 +70,18 @@ function Sidebar() {
             <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={()=> navigate('/createPost')}
+                onClick={() => navigate('/createPost')}
                 className="w-full mt-6 px-4 py-3 bg-purple-600 text-white rounded-lg font-medium shadow-lg hover:bg-purple-700 transition-colors"
             >
                 Create Post
+            </motion.button>
+            <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => navigate('/createCommunity')}
+                className="w-full flex gap-1 mt-6 px-4 py-3 bg-purple-600 text-white rounded-lg font-medium shadow-lg hover:bg-purple-700 transition-colors"
+            >
+                Create Community <PlusCircle/>
             </motion.button>
 
             {/* My Communities Section */}
@@ -63,19 +90,19 @@ function Sidebar() {
                     My Communities
                 </h3>
                 <div className="mt-4 space-y-2">
-                    {[
-                        { name: 'Web Development', image: 'https://kartikmehtablog.com/wp-content/uploads/2022/12/AdobeStock_419269782-2048x853.jpeg' },
-                        { name: 'AI & Technology', image: 'https://thefusioneer.com/wp-content/uploads/2023/11/5-AI-Advancements-to-Expect-in-the-Next-10-Years-scaled.jpeg' },
-                        { name: 'Digital Art', image: 'https://www.elegantthemes.com/blog/wp-content/uploads/2023/07/history-of-AI-art-1536x764.jpg' }
-                    ].map((community) => (
+                    {communities.map((community) => (
                         <motion.a
-                            key={community.name}
-                            href="#"
+                            key={community.id}
+                            onClick={() => navigate(`/community/${community.id}`)} // Navigate to the community page
                             whileHover={{ x: 5 }}
-                            className="flex items-center space-x-3 px-4 py-2 rounded-lg text-gray-300 hover:bg-gray-200 hover:text-gray-900"
+                            className="flex items-center space-x-3 px-4 py-2 rounded-lg text-gray-300 hover:bg-gray-200 hover:text-gray-900 cursor-pointer"
                         >
                             <span>
-                                <img className="rounded-full h-10 w-10 object-cover" src={community.image} alt={community.name} />
+                                <img
+                                    className="rounded-full h-10 w-10 object-cover"
+                                    src={community.coverImage || 'https://via.placeholder.com/150'} // Fallback image
+                                    alt={community.name}
+                                />
                             </span>
                             <span>{community.name}</span>
                         </motion.a>
@@ -113,7 +140,9 @@ function Sidebar() {
             {/* Daily Tip Section */}
             <div className="mt-8 p-4 bg-gray-700 rounded-lg">
                 <LightBulbIcon className="h-6 w-6 text-yellow-400 mb-2" />
-                <p className="text-gray-300 text-sm">"Consistency beats intensity. Small daily progress leads to big results!"</p>
+                <p className="text-gray-300 text-sm">
+                    "Consistency beats intensity. Small daily progress leads to big results!"
+                </p>
             </div>
 
             {/* Dark Mode Toggle */}
@@ -123,7 +152,7 @@ function Sidebar() {
                     <MoonIcon className="h-6 w-6 text-gray-200" />
                 </button>
             </div>
-            
+
             {/* Logout Button */}
             <motion.button
                 whileHover={{ scale: 1.02 }}

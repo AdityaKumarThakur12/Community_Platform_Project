@@ -1,20 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Users } from 'lucide-react';
 import { BellIcon, ChatBubbleLeftIcon, FireIcon, ArrowTrendingUpIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import Header from '../components/header';
 import Sidebar from '../components/sidebar';
-import CommunityCard from '../components/communityCard';
 import FeedPost from '../components/feedPost';
 import TrendingTopics from '../components/trendingTopic';
 import OnboardingModal from '../components/onBoardingModal';
 import Footer from '../components/footer';
 import Carousel from '../components/carousel';
 import Testimonials from '../components/testimonials';
-
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('trending');
+  const [communities, setCommunities] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app/communities.json")
+      .then((response) => {
+        if (response.data) {
+          const fetchedCommunities = Object.keys(response.data).map((key) => ({
+            id: key, // Ensure ID is correctly assigned
+            ...response.data[key],
+          }));
+          setCommunities(fetchedCommunities);
+        }
+      })
+      .catch((error) => console.error("Error fetching communities:", error));
+  }, []);
 
   const filters = [
     { id: 'trending', name: 'Trending', icon: FireIcon },
@@ -62,6 +80,7 @@ function Home() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => navigate('/createCommunity')}
                   className="mt-6 px-4 py-2 bg-gray-100 text-purple-900 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all"
                 >
                   Explore Communities
@@ -92,7 +111,7 @@ function Home() {
 
               {/* Feed Posts */}
               <div className="space-y-6">
-                <FeedPost/>
+                <FeedPost />
               </div>
 
               <Testimonials />
@@ -100,40 +119,36 @@ function Home() {
 
             {/* Right Sidebar */}
             <aside className="hidden xl:block w-80 space-y-6">
-              <div className="bg-gray-900 rounded-xl p-6 ">
-                <div className="relative w-fit mx-auto">
-                  <h2 className="text-xl text-white font-bold text-center mb-6 pb-6 relative">
-                    Recomended Communities
-                  </h2>
-                  <svg
-                    className="absolute left-0 bottom-0 w-full h-6"
-                    viewBox="0 0 1440 320"
-                    preserveAspectRatio="none"
-                  >
-                    <path fill="#5A4FCF" fillOpacity="1" d="M0,256L48,234.7C96,213,192,171,288,154.7C384,139,480,149,576,170.7C672,192,768,224,864,240C960,256,1056,256,1152,250.7C1248,245,1344,235,1392,229.3L1440,224V320H0Z"></path>
-                  </svg>
-                </div>
+              <div className="bg-gray-900 rounded-xl p-6">
+                <h2 className="text-xl text-white font-bold text-center mb-6 pb-6 relative">
+                  Recommended Communities
+                </h2>
                 <div className="space-y-4">
-                  <CommunityCard
-                    name="Tech Innovators"
-                    members={12543}
-                    description="A community for tech enthusiasts and innovators"
-                    image="https://api.dicebear.com/7.x/identicon/svg?seed=tech"
+                  {communities.slice(0, 2).map((community) => ( // Show only 2 communities
+                    <div
+                      key={community.id}
+                      className="bg-gray-800 p-4 rounded-lg shadow hover:bg-gray-700 transition-colors cursor-pointer"
+                      onClick={() => navigate(`/community/${community.id}`)}
+                    >
+                      <img
+                        src={community.coverImage || 'https://via.placeholder.com/150'} // Fallback to placeholder image
+                        alt={community.name}
+                        className="w-full h-32 object-cover rounded-lg mb-4"
+                      />
+                      <h3 className="text-lg font-semibold text-white">{community.name}</h3>
+                      <p className="text-sm text-gray-400">{community.description}</p>
+                      <div className='flex items-center'>
+                        <Users className="w-5 h-5 mr-2 mt-1 text-white" />
+                        <p className="text-xs text-gray-500 mt-2">
+                          {community.members?.length || 0} members
+                        </p>
+                      </div>
 
-                  />
-                  <CommunityCard
-                    name="Digital Artists"
-                    members={8976}
-                    description="Share and discuss digital art and techniques"
-                    image="https://api.dicebear.com/7.x/identicon/svg?seed=art"
-                  />
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-xl">
-                <h2 className="text-xl font-semibold mb-4">Active Discussions</h2>
-                <div className="space-y-4">
-                  {/* Add active discussions here */}
+                    </div>
+                  ))}
+                  {communities.length === 0 && (
+                    <p className="text-gray-400 text-center">No communities available</p>
+                  )}
                 </div>
               </div>
             </aside>

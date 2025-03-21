@@ -5,7 +5,7 @@ import axios from "axios";
 import Header from "./header";
 import Footer from "./footer";
 
-const DATABASE_URL = "https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app/posts.json";
+const DATABASE_URL = "https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app/postss.json";
 
 function CreatePost() {
   const navigate = useNavigate();
