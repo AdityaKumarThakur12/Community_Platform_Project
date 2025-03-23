@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext';
+import { PlusCircle, ShieldQuestion, Contact, GraduationCap, HomeIcon, NotepadText, LogOut, LogInIcon } from 'lucide-react';
 import {
     BellIcon,
     UserCircleIcon,
     Bars3Icon,
     XMarkIcon,
     MagnifyingGlassIcon,
+    UserGroupIcon,
 } from '@heroicons/react/24/outline';
 import { getDatabase, ref, onValue } from 'firebase/database';
 
@@ -33,7 +35,7 @@ function Header() {
                             id,
                             ...post,
                         }))
-                        .sort((a, b) => b.timestamp - a.timestamp); // Sort by timestamp (most recent first)
+                        .sort((a, b) => b.timestamp - a.timestamp);
                     setNotifications(data);
                 } else {
                     setNotifications([]);
@@ -77,6 +79,73 @@ function Header() {
                                 <MagnifyingGlassIcon className="h-6 w-6" />
                             </button>
                         )}
+
+                        <div className="relative">
+                            <button
+                                onClick={() => setNotificationsOpen(!notificationsOpen)}
+                                className="flex items-center space-x-2 text-gray-200"
+                            >
+                                <BellIcon className="h-6 w-6" />
+                                {/* <span></span> */}
+                            </button>
+                            {notificationsOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute right-0 mt-2 z-10 w-64 bg-gray-700 text-white rounded-lg shadow-lg p-3"
+                                >
+                                    <h3 className="text-sm font-semibold mb-2">New Posts</h3>
+                                    {notifications.length > 0 ? (
+                                        notifications.map((post) => (
+                                            <div
+                                                key={post.id}
+                                                className="p-2 border-b border-gray-600 cursor-pointer hover:bg-gray-700"
+                                                onClick={() => handleNotificationClick(post.id)}
+                                            >
+                                                <p className="text-xs text-gray-300 line-clamp-2">
+                                                    {post.content ? post.content.substring(0, 100) : "No content available"} {/* Fallback for undefined content */}
+                                                </p>
+                                                <span className="text-gray-400 text-xs">{post.author || "Unknown author"}</span> {/* Fallback for undefined author */}
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-xs text-gray-400">No new posts</p>
+                                    )}
+                                </motion.div>
+                            )}
+                        </div>
+
+                        <div className="relative">
+                            <button
+                                onClick={() => setProfileOpen(!profileOpen)}
+                                className="flex items-center space-x-2 text-gray-200"
+                            >
+                                <UserCircleIcon className="h-6 w-6" />
+                                {/* <span>Profile</span> */}
+                            </button>
+                            {profileOpen && currentUser && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute right-0 mt-2 z-20 w-64 bg-gray-700 text-white rounded-lg shadow-lg p-3"
+                                >
+                                    <h3 className="text-sm font-semibold">Profile</h3>
+                                    <p className="text-xs text-gray-400">{currentUser.email}</p>
+                                    <button
+                                        className="mt-2 w-full bg-red-500 text-white py-1 rounded-lg text-sm"
+                                        onClick={async () => {
+                                            await logout();
+                                            navigate('/login');
+                                        }}
+                                    >
+                                        Logout
+                                    </button>
+                                </motion.div>
+                            )}
+                        </div>
+
                         <button onClick={() => setMenuOpen(!menuOpen)} className="text-gray-200 focus:outline-none">
                             {menuOpen ? <XMarkIcon className="h-7 w-7" /> : <Bars3Icon className="h-7 w-7" />}
                         </button>
@@ -149,21 +218,25 @@ function Header() {
 
                         {/* Login/Logout */}
                         {currentUser ? (
-                            <button
-                                className="text-white py-2 px-4 cursor-pointer border rounded-xl"
+                            
+                                <button
+                                className="text-white flex gap-2 py-2 px-4 cursor-pointer border rounded-xl"
                                 onClick={async () => {
                                     await logout();
                                     navigate('/login');
                                 }}
                             >
-                                Logout
+                                Logout <LogOut/>
                             </button>
+                            
+                           
+                            
                         ) : (
                             <button
-                                className="text-white py-2 px-4 cursor-pointer border rounded-xl"
+                                className="text-white flex gap-2 py-2 px-4 cursor-pointer border rounded-xl"
                                 onClick={() => navigate('/login')}
                             >
-                                Login
+                                Login <LogInIcon/>
                             </button>
                         )}
                     </nav>
@@ -197,78 +270,72 @@ function Header() {
                 className={`fixed top-0 left-0 h-full w-64 bg-gray-800 shadow-lg z-50 transform ${menuOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
             >
+
                 <div className="flex flex-col h-full p-5">
                     <button onClick={() => setMenuOpen(false)} className="self-end text-white">
                         <XMarkIcon className="h-6 w-6" />
                     </button>
                     <div className="mt-6 space-y-4">
-                        {/* Notifications */}
-                        <div className="relative">
-                            <button
-                                onClick={() => setNotificationsOpen(!notificationsOpen)}
-                                className="flex items-center space-x-2 text-gray-200"
-                            >
-                                <BellIcon className="h-6 w-6" />
-                                <span>Notifications</span>
-                            </button>
-                            {notificationsOpen && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="absolute left-0 mt-2 z-10 w-full bg-gray-700 text-white rounded-lg shadow-lg p-3"
-                                >
-                                    <h3 className="text-sm font-semibold mb-2">New Posts</h3>
-                                    {notifications.length > 0 ? (
-                                        notifications.map((post) => (
-                                            <div
-                                                key={post.id}
-                                                className="p-2 border-b border-gray-600 cursor-pointer hover:bg-gray-700"
-                                                onClick={() => handleNotificationClick(post.id)}
-                                            >
-                                                <p className="text-xs text-gray-300 line-clamp-2">
-                                                    {post.content ? post.content.substring(0, 100) : "No content available"} {/* Fallback for undefined content */}
-                                                </p>
-                                                <span className="text-gray-400 text-xs">{post.author || "Unknown author"}</span> {/* Fallback for undefined author */}
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p className="text-xs text-gray-400">No new posts</p>
-                                    )}
-                                </motion.div>
-                            )}
+                        <div className='flex gap-2'>
+                            <HomeIcon className='h-6 w-6 text-white' />
+                            <button onClick={() => navigate('/')} className='text-white'>Home</button>
                         </div>
 
-                        {/* Profile */}
-                        <div className="relative">
-                            <button
-                                onClick={() => setProfileOpen(!profileOpen)}
-                                className="flex items-center space-x-2 text-gray-200"
-                            >
-                                <UserCircleIcon className="h-6 w-6" />
-                                <span>Profile</span>
-                            </button>
-                            {profileOpen && currentUser && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="absolute left-0 mt-2 z-20 w-full bg-gray-700 text-white rounded-lg shadow-lg p-3"
-                                >
-                                    <h3 className="text-sm font-semibold">Profile</h3>
-                                    <p className="text-xs text-gray-400">{currentUser.email}</p>
-                                    <button
-                                        className="mt-2 w-full bg-red-500 text-white py-1 rounded-lg text-sm"
-                                        onClick={async () => {
-                                            await logout();
-                                            navigate('/login');
-                                        }}
-                                    >
-                                        Logout
-                                    </button>
-                                </motion.div>
-                            )}
+                        {/* my communitites icon */}
+                        <div className='flex gap-2'>
+                            <UserGroupIcon className='h-6 w-6 text-white' />
+                            <button onClick={() => navigate('/communities')} className='text-white'>My communities</button>
                         </div>
+
+                        <div className='flex gap-2'>
+                            <ShieldQuestion className='h-6 w-6 text-white' />
+                            <button onClick={() => navigate('/faq')} className='text-white'>FAQ</button>
+                        </div>
+                        <div className='flex gap-2'>
+                            <Contact className='h-6 w-6 text-white' />
+                            <button onClick={() => navigate('/contact')} className='text-white'>Contact</button>
+                        </div>
+                        <div className='flex gap-2'>
+                            <GraduationCap className='h-6 w-6 text-white' />
+                            <button onClick={() => navigate('/learnmore')} className='text-white'>Learn More</button>
+                        </div>
+
+
+                        {/* Notifications */}
+
+
+                        {/* Profile */}
+                        
+
+                        <div className='flex gap-2 bg-purple-700 py-2 px-2 rounded-xl'>
+                            <NotepadText className='h-6 w-6 text-white' />
+                            <button onClick={() => navigate('/createPost')} className='text-white'>Create Post</button>
+                        </div>
+                        <div className='flex gap-2 bg-purple-700 py-2 px-2 rounded-xl'>
+                            <UserGroupIcon className='h-6 w-6 text-white' />
+                            <button onClick={() => navigate('/createCommunity')} className='text-white'>Create Community</button>
+                        </div>
+
+                        {currentUser ? (
+                            <button
+                                className="text-white flex gap-2 py-2 px-10 cursor-pointer border rounded-xl"
+                                onClick={async () => {
+                                    await logout();
+                                    navigate('/login');
+                                }}
+                            >
+                                Logout <LogOut/>
+                            </button>
+                        ) : (
+                            <button
+                                className="text-white flex gap-2 py-2 px-4 cursor-pointer border rounded-xl"
+                                onClick={() => navigate('/login')}
+                            >
+                                Login <LogInIcon/>
+                            </button>
+                        )}
+
+
                     </div>
                 </div>
             </motion.div>

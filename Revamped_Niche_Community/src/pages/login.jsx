@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { getDatabase, ref, set } from 'firebase/database';
 
 const Login = () => {
-    const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+    const [formData, setFormData] = useState({ name: "Aditya", email: "ak12@gmail.com", password: "ak98142" });
     const navigate = useNavigate();
     const { login, googleSignIn } = useAuth();
 

@@ -15,12 +15,52 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext'; // Import authentication context
 
 function Home() {
-  const [showOnboarding, setShowOnboarding] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('trending');
   const [communities, setCommunities] = useState([]);
-  const [showLoginModal, setShowLoginModal] = useState(false); // State to control login modal visibility
-  const { currentUser } = useAuth(); // Get the current user from the auth context
+  const [showLoginModal, setShowLoginModal] = useState(false); 
+  const { currentUser } = useAuth();
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    const hasSeenOnboarding = sessionStorage.getItem("hasSeenOnboarding");
+    const hasSeenOnboardingForUser = currentUser
+      ? localStorage.getItem(`hasSeenOnboarding_${currentUser.uid}`)
+      : null;
+  
+    return !hasSeenOnboarding && !hasSeenOnboardingForUser; 
+  });
   const navigate = useNavigate();
+
+  const handleCloseOnboarding = () => {
+    setShowOnboarding(false);
+    sessionStorage.setItem("hasSeenOnboarding", "true");
+  
+    if (currentUser) {
+      localStorage.setItem(`hasSeenOnboarding_${currentUser.uid}`, "true"); 
+    }
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.removeItem("hasSeenOnboarding"); // Reset on refresh
+    };
+  
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+  
+  useEffect(() => {
+    if (currentUser) {
+      const hasSeenOnboardingForUser = localStorage.getItem(
+        `hasSeenOnboarding_${currentUser.uid}`
+      );
+  
+      if (!hasSeenOnboardingForUser) {
+        setShowOnboarding(true);
+      }
+    }
+  }, [currentUser]);
+  
 
   useEffect(() => {
     axios
@@ -28,7 +68,7 @@ function Home() {
       .then((response) => {
         if (response.data) {
           const fetchedCommunities = Object.keys(response.data).map((key) => ({
-            id: key, // Ensure ID is correctly assigned
+            id: key,
             ...response.data[key],
           }));
           setCommunities(fetchedCommunities);
@@ -45,9 +85,9 @@ function Home() {
 
   const handleExploreClick = () => {
     if (currentUser) {
-      navigate('/communities');
+      navigate('/home');
     } else {
-      setShowLoginModal(true); // Show the login modal if the user is not logged in
+      setShowLoginModal(true); 
     }
   };
 
@@ -171,7 +211,7 @@ function Home() {
 
         <AnimatePresence>
           {showOnboarding && (
-            <OnboardingModal onClose={() => setShowOnboarding(false)} />
+            <OnboardingModal onClose={handleCloseOnboarding} />
           )}
         </AnimatePresence>
       </div>

@@ -2,16 +2,16 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from  "firebase/database";
 import { getAuth  } from "firebase/auth"
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCkOGS1f23BbAAo-PfH5f-HIyXsA5pJKlw",
-  authDomain: "finanace-5dc1c.firebaseapp.com",
-  databaseURL: "https://finanace-5dc1c-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "finanace-5dc1c",
-  storageBucket: "finanace-5dc1c.firebasestorage.app",
-  messagingSenderId: "54428662496",
-  appId: "1:54428662496:web:8f41ac688d495f7ab96e85"
-};
 
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
