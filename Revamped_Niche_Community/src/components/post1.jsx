@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Heart, MessageSquare, Share2, Send, MessageCircle, HelpCircle, Image, Megaphone, Trash, Edit } from 'lucide-react';
 import { toggleLike, isPostLiked, addComment, getComments, deletePost, updatePost } from '../utils/storage';
+import { useAuth } from '../contexts/authContext';
 
 export default function Post1({ post, onUpdate }) {
+    const {currentUser} = useAuth();
     const [isLiked, setIsLiked] = useState(false);
     const [showComments, setShowComments] = useState(false);
     const [comments, setComments] = useState([]);
@@ -45,6 +47,7 @@ export default function Post1({ post, onUpdate }) {
     };
 
     const handleDelete = async () => {
+        if (!currentUser) return;
         try {
             await deletePost(post.communityId, post.id); // ✅ Pass communityId
             console.log(`✅ Post ${post.id} deleted`);
@@ -55,6 +58,7 @@ export default function Post1({ post, onUpdate }) {
     };
 
     const handleEdit = async () => {
+        if (!currentUser) return;
         if (isEditing) {
             try {
                 await updatePost(post.communityId, post.id, editedContent); // ✅ Pass communityId
